@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+	<title>Partial Match - Demo</title>
+	<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+	<script src="./partial-match.js"></script>
+</head>
+<body>
+
+	<p>
+		Color format: #DDD, #DDDDDD<br/>
+		<input type="text" id="color" />
+	</p>
+	<pre id="color-status"></pre>
+
+	<p>
+		Numeral: 2, 2.5, 2 3/4, 1/5<br/>
+		<input type="text" id="numeral" />
+	</p>
+	<pre id="numeral-status"></pre>
+
+	<script>
+		var colorPartialMatch = new PartialMatch({
+			'3hex': '#[0-9a-fA-F]{3}',
+			'6hex': '#[0-9a-fA-F]{6}'
+		});
+		$('#color').on( 'input change', function() {
+			var matches = colorPartialMatch.match( $(this).val() );
+
+			$('#color-status').html( JSON.stringify( matches, undefined, 2 ) );
+		});
+
+		var numeralPartialMatch = new PartialMatch({
+			'whole': '\\d+',
+			'decimal': '\\d+\\.\\d+',
+			'wholeFraction': '\\d+\\s+\\d+/\\d+',
+			'fraction': '\\d+/\\d+'
+		});
+		$('#numeral').on( 'input change', function() {
+			var matches = numeralPartialMatch.match( $(this).val() );
+			$('#numeral-status').html( JSON.stringify( matches, undefined, 2 ) );
+		});
+	</script>
+</body>
+</html>
